@@ -24,7 +24,7 @@ public class Lectura {
                 correcto = true;
 
             } catch (NumberFormatException e) {
-                System.out.print("Error, tienes que introducir un número entero: ");
+                System.out.print("Error, tienes que escribir un número entero: ");
             }
         }
 
