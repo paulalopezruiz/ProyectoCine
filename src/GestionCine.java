@@ -1,6 +1,14 @@
+import java.io.File;
+
 public class GestionCine {
 
     public static void main(String[] args) throws Exception {
+
+        File carpeta = new File("./ficheros");
+
+        if (!carpeta.exists()) {
+            carpeta.mkdir();
+        }
 
         GestorPeliculas.crearFicheroPeliculas();
         GestorUsuarios.crearFicheroUsuarios();
