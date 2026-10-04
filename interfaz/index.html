@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Cine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+
+<header class="cabecera">
+    <h1>Gestión de Cine</h1>
+    <p>Películas, usuarios, sesiones y reservas</p>
+</header>
+
+<nav class="menu">
+    <a href="#peliculas">Películas</a>
+    <a href="#usuarios">Usuarios</a>
+    <a href="#sesiones">Sesiones</a>
+    <a href="#reservas">Reservas</a>
+    <a href="#exportar">Exportar</a>
+</nav>
+
+<main class="contenedor">
+
+    <section class="bienvenida">
+        <h2>Panel principal</h2>
+        <p>Selecciona una de las zonas para gestionar el cine.</p>
+    </section>
+
+    <!-- PELÍCULAS -->
+    <section id="peliculas" class="tarjeta">
+        <h2>Películas</h2>
+        <p>Gestión de las películas disponibles.</p>
+
+        <div class="botones">
+            <button id="anadirPelicula" data-tipo="peliculas" data-accion="anadir">Añadir película</button>
+            <button id="mostrarPeliculas" data-tipo="peliculas" data-accion="mostrar">Mostrar películas</button>
+            <button id="buscarPelicula" data-tipo="peliculas" data-accion="buscar">Buscar película</button>
+            <button id="modificarPelicula" data-tipo="peliculas" data-accion="modificar">Modificar película</button>
+            <button id="eliminarPelicula" class="eliminar" data-tipo="peliculas" data-accion="eliminar">Eliminar película</button>
+        </div>
+
+        <div id="formularioPelicula" class="formulario oculto">
+            <h3 id="tituloFormularioPelicula">Añadir película</h3>
+
+            <label for="idPelicula">ID</label>
+            <input type="number" id="idPelicula" min="1">
+
+            <label for="tituloPelicula">Título</label>
+            <input type="text" id="tituloPelicula">
+
+            <label for="generoPelicula">Género</label>
+            <input type="text" id="generoPelicula">
+
+            <label for="duracionPelicula">Duración en minutos</label>
+            <input type="number" id="duracionPelicula" min="1">
+
+            <div class="botones">
+                <button data-guardar="peliculas">Guardar</button>
+                <button class="cancelar" data-cancelar="peliculas">Cancelar</button>
+            </div>
+        </div>
+
+        <p id="mensajePelicula" class="mensaje"></p>
+
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Género</th>
+                    <th>Duración</th>
+                </tr>
+                </thead>
+                <tbody id="tablaPeliculas"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- USUARIOS -->
+    <section id="usuarios" class="tarjeta">
+        <h2>Usuarios</h2>
+        <p>Gestión de los usuarios que pueden realizar reservas.</p>
+
+        <div class="botones">
+            <button data-tipo="usuarios" data-accion="anadir">Añadir usuario</button>
+            <button data-tipo="usuarios" data-accion="mostrar">Mostrar usuarios</button>
+            <button data-tipo="usuarios" data-accion="buscar">Buscar usuario</button>
+            <button data-tipo="usuarios" data-accion="modificar">Modificar usuario</button>
+            <button class="eliminar" data-tipo="usuarios" data-accion="eliminar">Eliminar usuario</button>
+        </div>
+
+        <div id="formularioUsuario" class="formulario oculto">
+            <h3 id="tituloFormularioUsuario">Añadir usuario</h3>
+
+            <label for="idUsuario">ID</label>
+            <input type="number" id="idUsuario" min="1">
+
+            <label for="nombreUsuario">Nombre</label>
+            <input type="text" id="nombreUsuario">
+
+            <label for="emailUsuario">Email</label>
+            <input type="email" id="emailUsuario">
+
+            <div class="botones">
+                <button data-guardar="usuarios">Guardar</button>
+                <button class="cancelar" data-cancelar="usuarios">Cancelar</button>
+            </div>
+        </div>
+
+        <p id="mensajeUsuario" class="mensaje"></p>
+
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                </tr>
+                </thead>
+                <tbody id="tablaUsuarios"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- SESIONES -->
+    <section id="sesiones" class="tarjeta">
+        <h2>Sesiones</h2>
+        <p>Gestión de las sesiones del cine.</p>
+
+        <div class="botones">
+            <button data-tipo="sesiones" data-accion="anadir">Añadir sesión</button>
+            <button data-tipo="sesiones" data-accion="mostrar">Mostrar sesiones</button>
+            <button data-tipo="sesiones" data-accion="buscar">Buscar sesión</button>
+            <button data-tipo="sesiones" data-accion="modificar">Modificar sesión</button>
+            <button class="eliminar" data-tipo="sesiones" data-accion="eliminar">Eliminar sesión</button>
+        </div>
+
+        <div id="formularioSesion" class="formulario oculto">
+            <h3 id="tituloFormularioSesion">Añadir sesión</h3>
+
+            <label for="idSesion">ID</label>
+            <input type="number" id="idSesion" min="1">
+
+            <label for="idPeliculaSesion">ID película</label>
+            <input type="number" id="idPeliculaSesion" min="1">
+
+            <label for="fechaSesion">Fecha</label>
+            <input type="date" id="fechaSesion">
+
+            <label for="horaSesion">Hora</label>
+            <input type="time" id="horaSesion">
+
+            <label for="salaSesion">Sala</label>
+            <input type="number" id="salaSesion" min="1">
+
+            <label for="precioSesion">Precio</label>
+            <input type="number" id="precioSesion" min="0.01" step="0.01">
+
+            <div class="botones">
+                <button data-guardar="sesiones">Guardar</button>
+                <button class="cancelar" data-cancelar="sesiones">Cancelar</button>
+            </div>
+        </div>
+
+        <p id="mensajeSesion" class="mensaje"></p>
+
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>ID película</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Sala</th>
+                    <th>Precio</th>
+                </tr>
+                </thead>
+                <tbody id="tablaSesiones"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- RESERVAS -->
+    <section id="reservas" class="tarjeta">
+        <h2>Reservas</h2>
+        <p>Gestión de reservas y asientos.</p>
+
+        <div class="botones">
+            <button data-tipo="reservas" data-accion="anadir">Añadir reserva</button>
+            <button data-tipo="reservas" data-accion="mostrar">Mostrar reservas</button>
+            <button data-tipo="reservas" data-accion="buscar">Buscar reserva</button>
+            <button data-tipo="reservas" data-accion="modificar">Modificar reserva</button>
+            <button class="eliminar" data-tipo="reservas" data-accion="eliminar">Eliminar reserva</button>
+        </div>
+
+        <div id="formularioReserva" class="formulario oculto">
+            <h3 id="tituloFormularioReserva">Añadir reserva</h3>
+
+            <label for="idReserva">ID</label>
+            <input type="number" id="idReserva" min="1">
+
+            <label for="idUsuarioReserva">ID usuario</label>
+            <input type="number" id="idUsuarioReserva" min="1">
+
+            <label for="idSesionReserva">ID sesión</label>
+            <input type="number" id="idSesionReserva" min="1">
+
+            <label for="asientosReserva">Asientos</label>
+            <input type="text" id="asientosReserva" placeholder="Ejemplo: 5, 6, 7">
+
+            <div class="botones">
+                <button data-guardar="reservas">Guardar</button>
+                <button class="cancelar" data-cancelar="reservas">Cancelar</button>
+            </div>
+        </div>
+
+        <p id="mensajeReserva" class="mensaje"></p>
+
+        <div class="tabla-contenedor">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>ID usuario</th>
+                    <th>ID sesión</th>
+                    <th>Asientos</th>
+                </tr>
+                </thead>
+                <tbody id="tablaReservas"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- EXPORTAR -->
+    <section id="exportar" class="tarjeta">
+        <h2>Exportar datos</h2>
+        <p>Opciones relacionadas con XML y JSON.</p>
+
+        <div class="botones">
+            <button id="exportarXStream">Exportar XML con XStream</button>
+            <button id="exportarDOM">Exportar XML con DOM</button>
+            <button id="exportarJSON">Exportar JSON</button>
+            <button id="leerJSON">Leer JSON</button>
+        </div>
+
+        <input type="file" id="archivoJSON" accept=".json,application/json" class="oculto">
+        <p id="mensajeExportar" class="mensaje"></p>
+    </section>
+
+</main>
+
+<!-- VENTANA DE ACCIONES -->
+<div id="ventanaAccion" class="accion oculto">
+    <div class="accion-contenido">
+        <h3 id="tituloAccion"></h3>
+        <p id="textoAccion"></p>
+
+        <div id="zonaIdAccion">
+            <label id="labelIdAccion" for="idAccion">ID</label>
+            <input type="number" id="idAccion" min="1">
+        </div>
+
+        <p id="mensajeAccion" class="mensaje-accion"></p>
+
+        <div id="botonesAccion" class="botones-accion">
+            <button id="aceptarAccion">Aceptar</button>
+            <button id="cancelarAccion" class="cancelar">Cancelar</button>
+        </div>
+
+        <div id="confirmacionEliminar" class="oculto">
+            <p id="textoConfirmacion"></p>
+
+            <div class="botones-accion">
+                <button id="confirmarEliminar" class="eliminar">Sí, eliminar</button>
+                <button id="cancelarEliminar" class="cancelar">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>Proyecto de Acceso a Datos - Gestión de Cine</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
