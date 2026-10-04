@@ -207,7 +207,7 @@ function guardarFormulario(tipo) {
 
     if (idAnterior == null) {
         datos[tipo].push(registro);
-        mostrarMensaje(tipo, capitalize(configuracion[tipo].singular) + " añadida/o correctamente");
+        mostrarMensaje(tipo, capitalize(configuracion[tipo].singular) + " añadida correctamente");
     } else {
         let posicion = datos[tipo].findIndex(function (elemento) {
             return elemento.id == idAnterior;
@@ -217,7 +217,7 @@ function guardarFormulario(tipo) {
             datos[tipo][posicion] = registro;
         }
 
-        mostrarMensaje(tipo, capitalize(configuracion[tipo].singular) + " modificada/o correctamente");
+        mostrarMensaje(tipo, capitalize(configuracion[tipo].singular) + " modificada correctamente");
     }
 
     guardarDatos(tipo);
@@ -483,7 +483,7 @@ function mostrarTabla(tipo, lista = null) {
     });
 }
 
-/* ACCIÓN */
+/* Acciones que hace el usuario */
 
 function abrirAccion(tipo, accion) {
     tipoActual = tipo;
@@ -522,7 +522,7 @@ function abrirAccion(tipo, accion) {
     idAccion.focus();
 }
 
-/* ACEPTAR ACCIÓN */
+/* Aceptar acciones del usuario */
 
 aceptarAccion.addEventListener("click", function () {
     let id = Number(idAccion.value);
@@ -572,15 +572,12 @@ aceptarAccion.addEventListener("click", function () {
     }
 });
 
-/* ENTER EN ACCIÓN */
 
 idAccion.addEventListener("keydown", function (event) {
     if (event.key == "Enter") {
         aceptarAccion.click();
     }
 });
-
-/* ELIMINAR */
 
 confirmarEliminar.addEventListener("click", function () {
     if (registroAEliminar == null) {
@@ -589,22 +586,16 @@ confirmarEliminar.addEventListener("click", function () {
 
     let tipo = tipoActual;
     let registro = registroAEliminar;
-
     let error = comprobarDependenciasAntesDeEliminar(tipo, registro.id);
-
-    if (error != "") {
-        cerrarAccion();
-        mostrarMensaje(tipo, error);
+    if (error != "") {cerrarAccion();mostrarMensaje(tipo, error);
         return;
     }
 
     let posicion = datos[tipo].findIndex(function (elemento) {
-        return elemento.id == registro.id;
-    });
+        return elemento.id == registro.id;});
 
     if (posicion != -1) {
-        datos[tipo].splice(posicion, 1);
-    }
+        datos[tipo].splice(posicion, 1);}
 
     guardarDatos(tipo);
     mostrarTabla(tipo);
@@ -613,7 +604,7 @@ confirmarEliminar.addEventListener("click", function () {
     mostrarMensaje(tipo, capitalize(configuracion[tipo].singular) + " eliminada/o correctamente");
 });
 
-/* DEPENDENCIAS */
+/* Dependencias */
 
 function comprobarDependenciasAntesDeEliminar(tipo, id) {
     if (tipo == "peliculas") {
@@ -638,8 +629,7 @@ function comprobarDependenciasAntesDeEliminar(tipo, id) {
 
     if (tipo == "sesiones") {
         let usada = datos.reservas.some(function (reserva) {
-            return reserva.idSesion == id;
-        });
+            return reserva.idSesion == id;});
 
         if (usada) {
             return "No puedes eliminar esta sesión porque tiene reservas";
@@ -649,7 +639,7 @@ function comprobarDependenciasAntesDeEliminar(tipo, id) {
     return "";
 }
 
-/* CANCELAR ACCIÓN */
+/* Cancelar accion */
 
 cancelarAccion.addEventListener("click", cerrarAccion);
 cancelarEliminar.addEventListener("click", cerrarAccion);
@@ -682,7 +672,7 @@ function cerrarAccion() {
     registroAEliminar = null;
 }
 
-/* LOCALSTORAGE */
+/* Recuperar los datos guardads */
 
 function cargarDatos(clave) {
     try {
@@ -723,7 +713,7 @@ function guardarTodo() {
     guardarDatos("reservas");
 }
 
-/* ASIENTOS */
+/* Asientos */
 
 function leerAsientos(texto) {
     if (texto.trim() == "") {
@@ -740,13 +730,13 @@ function leerAsientos(texto) {
         });
 }
 
-/* MENSAJES */
+/* Mensajes */
 
 function mostrarMensaje(tipo, texto) {
     document.getElementById(configuracion[tipo].mensaje).textContent = texto;
 }
 
-/* FORMATEAR */
+/* Formatear */
 
 function formatearFecha(fecha) {
     if (fecha == null || fecha == "") {
@@ -1029,7 +1019,6 @@ function mensajeExportar(texto) {
 }
 
 /* Inicio */
-
 function mostrarTodasLasTablas() {
     mostrarTabla("peliculas");
     mostrarTabla("usuarios");
