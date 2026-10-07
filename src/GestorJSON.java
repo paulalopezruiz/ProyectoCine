@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class GestorJSON {
 
-    // Exporta todos los datos a ficheros JSON.
+    // Exporta todos los datos a ficheros JSON
     public static void exportarJSON() throws Exception {
         exportarPeliculasJSON();
         exportarUsuariosJSON();
@@ -19,7 +19,7 @@ public class GestorJSON {
         System.out.println("Datos exportados a JSON");
     }
 
-    // Exporta las películas a Peliculas.json.
+    // Exporta las películas a Peliculas.json
     public static void exportarPeliculasJSON() throws Exception {
         ArrayList<Pelicula> peliculas = GestorPeliculas.leerPeliculas();
 
@@ -33,7 +33,7 @@ public class GestorJSON {
         fichero.close();
     }
 
-    // Exporta los usuarios a Usuarios.json.
+    // Exporta los usuarios a Usuarios.json
     public static void exportarUsuariosJSON() throws Exception {
         ArrayList<Usuario> usuarios = GestorUsuarios.leerUsuarios();
 
@@ -47,7 +47,7 @@ public class GestorJSON {
         fichero.close();
     }
 
-    // Exporta las sesiones a Sesiones.json.
+    // Exporta las sesiones a Sesiones.json
     public static void exportarSesionesJSON() throws Exception {
         ArrayList<Sesion> sesiones = GestorSesiones.leerSesiones();
 
@@ -72,14 +72,13 @@ public class GestorJSON {
         FileWriter fichero = new FileWriter("./ficheros/Reservas.json");
 
         gson.toJson(reservas, fichero);
-
         fichero.close();
     }
 
-    // Lee y muestra todos los ficheros JSON.
+    // Lee y muestra todos los ficheros JSON
     public static void leerJSON() throws Exception {
         System.out.println();
-        System.out.println("| DATOS LEÍDOS DESDE JSON |");
+        System.out.println("| Datos leidos desde JSON |");
 
         leerPeliculasJSON();
         leerUsuariosJSON();
@@ -87,7 +86,7 @@ public class GestorJSON {
         leerReservasJSON();
     }
 
-    // Lee Peliculas.json y lo convierte en una lista de películas.
+    // Lee Peliculas.json y lo convierte en una lista de películas
     public static void leerPeliculasJSON() throws Exception {
         Gson gson = new Gson();
 
@@ -111,7 +110,7 @@ public class GestorJSON {
         }
     }
 
-    // Lee Usuarios.json y lo convierte en una lista de usuarios.
+    // Lee Usuarios.json y lo convierte en una lista de usuarios
     public static void leerUsuariosJSON() throws Exception {
         Gson gson = new Gson();
 
@@ -134,7 +133,7 @@ public class GestorJSON {
         }
     }
 
-    // Lee Sesiones.json y lo convierte en una lista de sesiones.
+    // Lee Sesiones.json y lo convierte en una lista de sesiones
     public static void leerSesionesJSON() throws Exception {
         Gson gson = new Gson();
 
@@ -158,7 +157,7 @@ public class GestorJSON {
         }
     }
 
-    // Lee Reservas.json y lo convierte en una lista de reservas.
+    // Lee Reservas.json y lo convierte en una lista de reservas
     public static void leerReservasJSON() throws Exception {
         Gson gson = new Gson();
 

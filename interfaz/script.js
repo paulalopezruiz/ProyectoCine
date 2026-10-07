@@ -1,3 +1,4 @@
+// Carga los datos guardados anteriormente en localStorage
 let datos = {
     peliculas: cargarDatos("peliculas"),
     usuarios: cargarDatos("usuarios"),
@@ -5,11 +6,13 @@ let datos = {
     reservas: cargarDatos("reservas")
 };
 
+// Variables para controlar modificaciones y acciones
 let editando = null;
 let tipoActual = "";
 let accionActual = "";
 let registroAEliminar = null;
 
+// Configuración común de cada apartado de la aplicación
 let configuracion = {
     peliculas: {
         singular: "película",
@@ -49,6 +52,7 @@ let configuracion = {
     }
 };
 
+// Elementos HTML de la ventana de buscar, modificar y eliminar
 let ventanaAccion = document.getElementById("ventanaAccion");
 let tituloAccion = document.getElementById("tituloAccion");
 let textoAccion = document.getElementById("textoAccion");
@@ -64,8 +68,9 @@ let textoConfirmacion = document.getElementById("textoConfirmacion");
 let confirmarEliminar = document.getElementById("confirmarEliminar");
 let cancelarEliminar = document.getElementById("cancelarEliminar");
 
-/* Botones principales */
 
+
+// Gestiona la acción elegida en cada apartado
 document.querySelectorAll("[data-tipo][data-accion]").forEach(function (boton) {
     boton.addEventListener("click", function () {
         let tipo = boton.dataset.tipo;
@@ -94,24 +99,27 @@ document.querySelectorAll("[data-tipo][data-accion]").forEach(function (boton) {
     });
 });
 
-/* Guardar formularios */
 
+
+// Guarda los datos del formulario correspondiente
 document.querySelectorAll("[data-guardar]").forEach(function (boton) {
     boton.addEventListener("click", function () {
         guardarFormulario(boton.dataset.guardar);
     });
 });
 
-/* Cancelar formularios */
 
+
+// Cierra el formulario sin guardar cambios
 document.querySelectorAll("[data-cancelar]").forEach(function (boton) {
     boton.addEventListener("click", function () {
         cerrarFormulario(boton.dataset.cancelar);
     });
 });
 
-/* Abrir formulario */
 
+
+// Abre un formulario para añadir o modificar un registro
 function abrirFormulario(tipo, registro = null) {
     cerrarTodosLosFormularios();
 
@@ -134,6 +142,8 @@ function abrirFormulario(tipo, registro = null) {
 
         titulo.textContent = "Modificar " + config.singular;
         rellenarFormulario(tipo, registro);
+
+        // El ID no se puede modificar
         campoId.disabled = true;
     }
 
@@ -146,8 +156,9 @@ function abrirFormulario(tipo, registro = null) {
     }
 }
 
-/* Leer formularios */
 
+
+// Lee los campos del formulario y crea el objeto correspondiente
 function leerFormulario(tipo) {
     if (tipo == "peliculas") {
         return {
@@ -187,8 +198,9 @@ function leerFormulario(tipo) {
     }
 }
 
-/* Guardar */
 
+
+// Añade un registro nuevo o modifica uno existente
 function guardarFormulario(tipo) {
     let registro = leerFormulario(tipo);
     let idAnterior = null;
@@ -205,10 +217,14 @@ function guardarFormulario(tipo) {
         return;
     }
 
+    // Añadir nuevo registro
     if (idAnterior == null) {
         datos[tipo].push(registro);
+
         mostrarMensaje(tipo, capitalize(configuracion[tipo].singular) + " añadida correctamente");
     } else {
+
+        // Buscar la posición del registro que se modifica
         let posicion = datos[tipo].findIndex(function (elemento) {
             return elemento.id == idAnterior;
         });
@@ -225,13 +241,14 @@ function guardarFormulario(tipo) {
     cerrarFormulario(tipo);
 }
 
-/* Validaciones */
 
+// Comprueba que los datos introducidos sean válidos
 function validarRegistro(tipo, registro, idAnterior) {
     if (!Number.isInteger(registro.id) || registro.id <= 0) {
         return "El ID tiene que ser un número mayor que 0";
     }
 
+    // Comprueba que no exista otro registro con el mismo ID
     let repetido = datos[tipo].some(function (elemento) {
         return elemento.id == registro.id && elemento.id != idAnterior;
     });
@@ -244,11 +261,9 @@ function validarRegistro(tipo, registro, idAnterior) {
         if (registro.titulo == "") {
             return "El título no puede estar vacío";
         }
-
         if (registro.genero == "") {
             return "El género no puede estar vacío";
         }
-
         if (registro.duracion <= 0) {
             return "La duración tiene que ser mayor que 0";
         }
@@ -258,9 +273,7 @@ function validarRegistro(tipo, registro, idAnterior) {
         if (registro.nombre == "") {
             return "El nombre no puede estar vacío";
         }
-
         let expresionEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
         if (!expresionEmail.test(registro.email)) {
             return "Introduce un email válido";
         }
@@ -270,23 +283,18 @@ function validarRegistro(tipo, registro, idAnterior) {
         let peliculaExiste = datos.peliculas.some(function (pelicula) {
             return pelicula.id == registro.idPelicula;
         });
-
         if (!peliculaExiste) {
             return "No existe una película con ese ID";
         }
-
         if (registro.fecha == "") {
             return "Selecciona una fecha";
         }
-
         if (registro.hora == "") {
             return "Selecciona una hora";
         }
-
         if (registro.sala <= 0) {
             return "La sala tiene que ser mayor que 0";
         }
-
         if (registro.precio <= 0) {
             return "El precio tiene que ser mayor que 0";
         }
@@ -300,44 +308,40 @@ function validarRegistro(tipo, registro, idAnterior) {
         if (!usuarioExiste) {
             return "No existe un usuario con ese ID";
         }
-
         let sesionExiste = datos.sesiones.some(function (sesion) {
             return sesion.id == registro.idSesion;
         });
-
         if (!sesionExiste) {
             return "No existe una sesión con ese ID";
         }
-
         if (registro.asientos.length == 0) {
             return "Introduce al menos un asiento";
         }
-
+        // Comprueba que todos los asientos sean números enteros válidos
         for (let i = 0; i < registro.asientos.length; i++) {
             if (Number.isNaN(registro.asientos[i])) {
                 return "Los asientos solo pueden contener números";
             }
-
             if (!Number.isInteger(registro.asientos[i])) {
                 return "Los asientos tienen que ser números enteros";
             }
-
             if (registro.asientos[i] <= 0) {
                 return "Los asientos tienen que ser mayores que 0";
             }
         }
 
+        // Comprueba que no haya asientos repetidos
         let asientosSinRepetir = new Set(registro.asientos);
 
         if (asientosSinRepetir.size != registro.asientos.length) {
             return "No puedes repetir un asiento en la misma reserva";
         }
 
+        // Obtiene los asientos ya ocupados en la sesión
         let asientosOcupados = [];
 
         for (let i = 0; i < datos.reservas.length; i++) {
             let reserva = datos.reservas[i];
-
             if (reserva.id == idAnterior) {
                 continue;
             }
@@ -359,8 +363,8 @@ function validarRegistro(tipo, registro, idAnterior) {
     return "";
 }
 
-/* Rellenar formulario */
 
+// Rellena un formulario con los datos de un registro
 function rellenarFormulario(tipo, registro) {
     if (tipo == "peliculas") {
         document.getElementById("idPelicula").value = registro.id;
@@ -392,8 +396,8 @@ function rellenarFormulario(tipo, registro) {
     }
 }
 
-/* Limpiar formulario */
 
+// Vacía todos los campos del formulario
 function limpiarFormulario(tipo) {
     let formulario = document.getElementById(configuracion[tipo].formulario);
     let campos = formulario.querySelectorAll("input");
@@ -404,10 +408,11 @@ function limpiarFormulario(tipo) {
     });
 }
 
-/* Cerrar formulario */
 
+// Oculta y limpia el formulario
 function cerrarFormulario(tipo) {
     document.getElementById(configuracion[tipo].formulario).classList.add("oculto");
+
     limpiarFormulario(tipo);
 
     if (editando != null && editando.tipo == tipo) {
@@ -415,6 +420,7 @@ function cerrarFormulario(tipo) {
     }
 }
 
+// Cierra todos los formularios visibles
 function cerrarTodosLosFormularios() {
     Object.keys(configuracion).forEach(function (tipo) {
         document.getElementById(configuracion[tipo].formulario).classList.add("oculto");
@@ -422,8 +428,7 @@ function cerrarTodosLosFormularios() {
     });
 }
 
-/* Mostrar tablas */
-
+// Muestra los registros en la tabla correspondiente
 function mostrarTabla(tipo, lista = null) {
     if (lista == null) {
         lista = datos[tipo];
@@ -444,7 +449,6 @@ function mostrarTabla(tipo, lista = null) {
                 registro.duracion + " min"
             ];
         }
-
         if (tipo == "usuarios") {
             valores = [
                 registro.id,
@@ -452,7 +456,6 @@ function mostrarTabla(tipo, lista = null) {
                 registro.email
             ];
         }
-
         if (tipo == "sesiones") {
             valores = [
                 registro.id,
@@ -463,7 +466,6 @@ function mostrarTabla(tipo, lista = null) {
                 formatearPrecio(registro.precio)
             ];
         }
-
         if (tipo == "reservas") {
             valores = [
                 registro.id,
@@ -473,6 +475,7 @@ function mostrarTabla(tipo, lista = null) {
             ];
         }
 
+        // Crea una celda por cada valor
         valores.forEach(function (valor) {
             let celda = document.createElement("td");
             celda.textContent = valor;
@@ -485,6 +488,7 @@ function mostrarTabla(tipo, lista = null) {
 
 /* Acciones que hace el usuario */
 
+// Abre la ventana para buscar, modificar o eliminar
 function abrirAccion(tipo, accion) {
     tipoActual = tipo;
     accionActual = accion;
@@ -496,17 +500,21 @@ function abrirAccion(tipo, accion) {
     if (accion == "buscar") {
         titulo = "Buscar " + nombre;
     }
-
     if (accion == "modificar") {
         titulo = "Modificar " + nombre;
     }
-
     if (accion == "eliminar") {
         titulo = "Eliminar " + nombre;
     }
 
     tituloAccion.textContent = capitalize(titulo);
-    textoAccion.textContent = "Introduce el ID de " + articulo(tipo) + " que quieres " + accion + ".";
+    textoAccion.textContent =
+        "Introduce el ID de " +
+        articulo(tipo) +
+        " que quieres " +
+        accion +
+        ".";
+
     labelIdAccion.textContent = "ID de " + nombre;
 
     idAccion.value = "";
@@ -515,15 +523,15 @@ function abrirAccion(tipo, accion) {
     textoAccion.classList.remove("oculto");
     zonaIdAccion.classList.remove("oculto");
     botonesAccion.classList.remove("oculto");
+
     confirmacionEliminar.classList.add("oculto");
-
     ventanaAccion.classList.remove("oculto");
-
     idAccion.focus();
 }
 
 /* Aceptar acciones del usuario */
 
+// Busca el registro y ejecuta la acción seleccionada
 aceptarAccion.addEventListener("click", function () {
     let id = Number(idAccion.value);
 
@@ -531,54 +539,59 @@ aceptarAccion.addEventListener("click", function () {
         mensajeAccion.textContent = "Introduce un ID válido";
         return;
     }
-
     let registro = datos[tipoActual].find(function (elemento) {
         return elemento.id == id;
     });
 
     if (registro == null) {
-        mensajeAccion.textContent = "No existe " + articulo(tipoActual) + " con ese ID";
+        mensajeAccion.textContent =
+            "No existe " +
+            articulo(tipoActual) +
+            " con ese ID";
+
         return;
     }
 
+    // Buscar
     if (accionActual == "buscar") {
         let tipo = tipoActual;
 
         mostrarTabla(tipo, [registro]);
-        cerrarAccion();
 
+        cerrarAccion();
         mostrarMensaje(tipo, capitalize(configuracion[tipo].singular) + " encontrada/o");
     }
 
+    // Modificar
     if (accionActual == "modificar") {
         let tipo = tipoActual;
 
         cerrarAccion();
         abrirFormulario(tipo, registro);
     }
-
+    // Eliminar
     if (accionActual == "eliminar") {
         registroAEliminar = registro;
 
         textoAccion.classList.add("oculto");
         zonaIdAccion.classList.add("oculto");
         botonesAccion.classList.add("oculto");
+
         mensajeAccion.textContent = "";
 
-        textoConfirmacion.textContent =
-            "¿Seguro que quieres eliminar " + obtenerNombreRegistro(tipoActual, registro) + "?";
-
+        textoConfirmacion.textContent = "¿Seguro que quieres eliminar " + obtenerNombreRegistro(tipoActual, registro) + "?";
         confirmacionEliminar.classList.remove("oculto");
     }
 });
 
-
+// Permite aceptar la acción pulsando Enter
 idAccion.addEventListener("keydown", function (event) {
     if (event.key == "Enter") {
         aceptarAccion.click();
     }
 });
 
+// Confirma la eliminación de un registro
 confirmarEliminar.addEventListener("click", function () {
     if (registroAEliminar == null) {
         return;
@@ -586,26 +599,34 @@ confirmarEliminar.addEventListener("click", function () {
 
     let tipo = tipoActual;
     let registro = registroAEliminar;
+
     let error = comprobarDependenciasAntesDeEliminar(tipo, registro.id);
-    if (error != "") {cerrarAccion();mostrarMensaje(tipo, error);
+
+    if (error != "") {
+        cerrarAccion();
+        mostrarMensaje(tipo, error);
         return;
     }
 
     let posicion = datos[tipo].findIndex(function (elemento) {
-        return elemento.id == registro.id;});
+        return elemento.id == registro.id;
+    });
 
     if (posicion != -1) {
-        datos[tipo].splice(posicion, 1);}
+        datos[tipo].splice(posicion, 1);
+    }
 
     guardarDatos(tipo);
     mostrarTabla(tipo);
     cerrarAccion();
 
-    mostrarMensaje(tipo, capitalize(configuracion[tipo].singular) + " eliminada/o correctamente");
+    mostrarMensaje(tipo, capitalize(configuracion[tipo].singular) + " eliminada/o correctamente"
+    );
 });
 
 /* Dependencias */
 
+// Evita eliminar registros que están relacionados con otros
 function comprobarDependenciasAntesDeEliminar(tipo, id) {
     if (tipo == "peliculas") {
         let usada = datos.sesiones.some(function (sesion) {
@@ -621,7 +642,6 @@ function comprobarDependenciasAntesDeEliminar(tipo, id) {
         let usado = datos.reservas.some(function (reserva) {
             return reserva.idUsuario == id;
         });
-
         if (usado) {
             return "No puedes eliminar este usuario porque tiene reservas";
         }
@@ -629,7 +649,8 @@ function comprobarDependenciasAntesDeEliminar(tipo, id) {
 
     if (tipo == "sesiones") {
         let usada = datos.reservas.some(function (reserva) {
-            return reserva.idSesion == id;});
+            return reserva.idSesion == id;
+        });
 
         if (usada) {
             return "No puedes eliminar esta sesión porque tiene reservas";
@@ -639,23 +660,12 @@ function comprobarDependenciasAntesDeEliminar(tipo, id) {
     return "";
 }
 
-/* Cancelar accion */
-
+// Cierra la ventana al cancelar
 cancelarAccion.addEventListener("click", cerrarAccion);
 cancelarEliminar.addEventListener("click", cerrarAccion);
 
-ventanaAccion.addEventListener("click", function (event) {
-    if (event.target == ventanaAccion) {
-        cerrarAccion();
-    }
-});
 
-document.addEventListener("keydown", function (event) {
-    if (event.key == "Escape" && !ventanaAccion.classList.contains("oculto")) {
-        cerrarAccion();
-    }
-});
-
+// Cierra y reinicia la ventana de acciones
 function cerrarAccion() {
     ventanaAccion.classList.add("oculto");
 
@@ -665,6 +675,7 @@ function cerrarAccion() {
     textoAccion.classList.remove("oculto");
     zonaIdAccion.classList.remove("oculto");
     botonesAccion.classList.remove("oculto");
+
     confirmacionEliminar.classList.add("oculto");
 
     tipoActual = "";
@@ -672,8 +683,8 @@ function cerrarAccion() {
     registroAEliminar = null;
 }
 
-/* Recuperar los datos guardads */
 
+// Recupera los datos guardados en el navegador
 function cargarDatos(clave) {
     try {
         let guardado = localStorage.getItem(clave);
@@ -695,17 +706,18 @@ function cargarDatos(clave) {
                 }
             });
         }
-
         return convertido;
     } catch (error) {
         return [];
     }
 }
 
+// Guarda un tipo de datos en localStorage
 function guardarDatos(tipo) {
     localStorage.setItem(tipo, JSON.stringify(datos[tipo]));
 }
 
+// Guarda todas las colecciones
 function guardarTodo() {
     guardarDatos("peliculas");
     guardarDatos("usuarios");
@@ -713,8 +725,7 @@ function guardarTodo() {
     guardarDatos("reservas");
 }
 
-/* Asientos */
-
+// Convierte el texto de asientos en un array de números
 function leerAsientos(texto) {
     if (texto.trim() == "") {
         return [];
@@ -730,21 +741,18 @@ function leerAsientos(texto) {
         });
 }
 
-/* Mensajes */
-
+// Muestra un mensaje en el apartado correspondiente
 function mostrarMensaje(tipo, texto) {
     document.getElementById(configuracion[tipo].mensaje).textContent = texto;
 }
 
-/* Formatear */
-
+// Convierte la fecha de AAAA-MM-DD a DD/MM/AAAA
 function formatearFecha(fecha) {
     if (fecha == null || fecha == "") {
         return "";
     }
 
     let partes = fecha.split("-");
-
     if (partes.length != 3) {
         return fecha;
     }
@@ -752,27 +760,27 @@ function formatearFecha(fecha) {
     return partes[2] + "/" + partes[1] + "/" + partes[0];
 }
 
+// Muestra el precio con dos decimales y símbolo €
 function formatearPrecio(precio) {
     return Number(precio).toFixed(2).replace(".", ",") + " €";
 }
 
+// Pone la primera letra en mayúscula
 function capitalize(texto) {
     if (texto == "") {
         return "";
     }
-
     return texto.charAt(0).toUpperCase() + texto.slice(1);
 }
 
+// Devuelve el artículo correspondiente al tipo
 function articulo(tipo) {
     if (tipo == "peliculas") {
         return "una película";
     }
-
     if (tipo == "usuarios") {
         return "un usuario";
     }
-
     if (tipo == "sesiones") {
         return "una sesión";
     }
@@ -784,49 +792,43 @@ function obtenerNombreRegistro(tipo, registro) {
     if (tipo == "peliculas") {
         return 'la película "' + registro.titulo + '"';
     }
-
     if (tipo == "usuarios") {
         return 'al usuario "' + registro.nombre + '"';
     }
-
     if (tipo == "sesiones") {
         return "la sesión con ID " + registro.id;
     }
-
     return "la reserva con ID " + registro.id;
 }
 
 /* Exportar JSON */
 
+// Convierte todos los datos a JSON y los descarga
 document.getElementById("exportarJSON").addEventListener("click", function () {
     let contenido = JSON.stringify(datos, null, 2);
 
-    descargarArchivo(
-        "cine.json",
-        contenido,
-        "application/json"
-    );
-
+    descargarArchivo("cine.json", contenido, "application/json");
     mensajeExportar("JSON exportado correctamente");
 });
 
 /* Leer JSON */
 
+// Abre el selector para elegir un archivo JSON
 document.getElementById("leerJSON").addEventListener("click", function () {
-    document.getElementById("archivoJSON").click();
-});
+    document.getElementById("archivoJSON").click();});
 
+// Lee y carga los datos de un archivo JSON
 document.getElementById("archivoJSON").addEventListener("change", async function (event) {
     let archivo = event.target.files[0];
 
     if (archivo == null) {
         return;
     }
-
     try {
         let texto = await archivo.text();
         let nuevosDatos = JSON.parse(texto);
 
+        // Comprueba que el archivo tenga las cuatro listas
         if (
             !Array.isArray(nuevosDatos.peliculas) ||
             !Array.isArray(nuevosDatos.usuarios) ||
@@ -862,10 +864,13 @@ document.getElementById("archivoJSON").addEventListener("change", async function
 
 /* XML tipo XSTREAM */
 
+// Genera el XML construyendo el texto manualmente
 document.getElementById("exportarXStream").addEventListener("click", function () {
     let xml = '<?xml version="1.0" encoding="UTF-8"?>';
+
     xml += "<cine>";
 
+    // Películas
     xml += "<peliculas>";
 
     datos.peliculas.forEach(function (p) {
@@ -926,13 +931,18 @@ document.getElementById("exportarXStream").addEventListener("click", function ()
     xml += "</reservas>";
     xml += "</cine>";
 
-    descargarArchivo("cine-xstream.xml", xml, "application/xml");
+    descargarArchivo(
+        "cine-xstream.xml",
+        xml,
+        "application/xml"
+    );
 
     mensajeExportar("XML exportado correctamente");
 });
 
 /* XML DOM */
 
+// Genera un documento XML utilizando el DOM
 document.getElementById("exportarDOM").addEventListener("click", function () {
     let documento = document.implementation.createDocument("", "cine", null);
     let raiz = documento.documentElement;
@@ -942,19 +952,13 @@ document.getElementById("exportarDOM").addEventListener("click", function () {
     crearListaXML(documento, raiz, "sesiones", "sesion", datos.sesiones);
     crearListaXML(documento, raiz, "reservas", "reserva", datos.reservas);
 
-    let xml =
-        '<?xml version="1.0" encoding="UTF-8"?>' +
-        new XMLSerializer().serializeToString(documento);
+    let xml = '<?xml version="1.0" encoding="UTF-8"?>' + new XMLSerializer().serializeToString(documento);
 
-    descargarArchivo(
-        "cine-dom.xml",
-        xml,
-        "application/xml"
-    );
-
+    descargarArchivo("cine-dom.xml", xml, "application/xml");
     mensajeExportar("XML DOM exportado correctamente");
 });
 
+// Crea los elementos XML de una lista
 function crearListaXML(documento, raiz, nombreLista, nombreElemento, lista) {
     let contenedor = documento.createElement(nombreLista);
 
@@ -962,6 +966,7 @@ function crearListaXML(documento, raiz, nombreLista, nombreElemento, lista) {
         let elemento = documento.createElement(nombreElemento);
 
         Object.keys(registro).forEach(function (clave) {
+
             if (clave == "asientos" && Array.isArray(registro[clave])) {
                 let contenedorAsientos = documento.createElement("asientos");
 
@@ -978,7 +983,6 @@ function crearListaXML(documento, raiz, nombreLista, nombreElemento, lista) {
                 elemento.appendChild(campo);
             }
         });
-
         contenedor.appendChild(elemento);
     });
 
@@ -994,8 +998,7 @@ function escaparXML(valor) {
         .replaceAll("'", "&apos;");
 }
 
-/* Descargar archivos */
-
+// Crea y descarga un archivo desde el navegador
 function descargarArchivo(nombre, contenido, tipo) {
     let blob = new Blob([contenido], {
         type: tipo
@@ -1013,12 +1016,12 @@ function descargarArchivo(nombre, contenido, tipo) {
 
     URL.revokeObjectURL(url);
 }
-
+// Muestra el resultado de importar o exportar
 function mensajeExportar(texto) {
     document.getElementById("mensajeExportar").textContent = texto;
 }
 
-/* Inicio */
+// Muestra las cuatro tablas al iniciar la página
 function mostrarTodasLasTablas() {
     mostrarTabla("peliculas");
     mostrarTabla("usuarios");

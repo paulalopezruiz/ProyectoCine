@@ -72,7 +72,7 @@ public class GestorUsuarios {
     }
 
 
-    // Pide los datos de un usuario y lo guarda.
+    // Pide los datos de un usuario y lo guarda
     public static void altaUsuario() throws Exception {
 
         ArrayList<Usuario> usuarios = leerUsuarios();
@@ -82,32 +82,26 @@ public class GestorUsuarios {
 
         boolean existe = false;
 
-        // Comprueba que el ID del usuario no esté repetido.
+        // Comprueba que el ID del usuario no esté repetido
         for (int i = 0; i < usuarios.size(); i++) {
-
             if (usuarios.get(i).getIdUsuario() == id) {
-
                 existe = true;
             }
         }
 
         if (existe) {
-
             System.out.println("Ya existe un usuario con ese ID");
 
         } else {
 
             System.out.print("Escribe el nombre: ");
             String nombre = Lectura.leerCadena();
-
             System.out.print("Escribe el email: ");
             String email = Lectura.leerCadena();
 
-            Usuario usuario =
-                    new Usuario(id, nombre, email);
+            Usuario usuario = new Usuario(id, nombre, email);
 
             usuarios.add(usuario);
-
             guardarUsuarios(usuarios);
 
             System.out.println("Usuario añadido");
@@ -115,7 +109,7 @@ public class GestorUsuarios {
     }
 
 
-    // Lee y muestra todos los usuarios guardados.
+    // Lee y muestra todos los usuarios guardados
     public static void mostrarUsuarios() throws Exception {
 
         ArrayList<Usuario> usuarios = leerUsuarios();
@@ -123,18 +117,15 @@ public class GestorUsuarios {
         if (usuarios.size() == 0) {
 
             System.out.println("No hay usuarios");
-
         } else {
-
             for (int i = 0; i < usuarios.size(); i++) {
-
                 usuarios.get(i).mostrar();
             }
         }
     }
 
 
-    // Busca un usuario utilizando su ID.
+    // Busca un usuario utilizando su ID
     public static void buscarUsuario() throws Exception {
 
         ArrayList<Usuario> usuarios = leerUsuarios();
@@ -145,7 +136,6 @@ public class GestorUsuarios {
         boolean encontrado = false;
 
         for (int i = 0; i < usuarios.size(); i++) {
-
             if (usuarios.get(i).getIdUsuario() == id) {
 
                 usuarios.get(i).mostrar();
@@ -154,7 +144,6 @@ public class GestorUsuarios {
         }
 
         if (!encontrado) {
-
             System.out.println("No existe ese usuario");
         }
     }
@@ -195,7 +184,6 @@ public class GestorUsuarios {
             System.out.println("Usuario modificado");
 
         } else {
-
             System.out.println("No existe ese usuario");
         }
     }
@@ -206,18 +194,13 @@ public class GestorUsuarios {
 
         ArrayList<Usuario> usuarios = leerUsuarios();
 
-        System.out.print(
-                "Escribe el ID del usuario que quieres eliminar: "
-        );
+        System.out.print("Escribe el ID del usuario que quieres eliminar: ");
 
         int id = Lectura.leerEntero();
 
         // No permite eliminar un usuario que tenga reservas.
         if (GestorReservas.usuarioTieneReservas(id)) {
-
-            System.out.println(
-                    "No puedes eliminar el usuario porque tiene reservas"
-            );
+            System.out.println("No puedes eliminar el usuario porque tiene reservas");
 
             return;
         }
@@ -227,7 +210,6 @@ public class GestorUsuarios {
         for (int i = 0; i < usuarios.size(); i++) {
 
             if (usuarios.get(i).getIdUsuario() == id) {
-
                 usuarios.remove(i);
                 encontrado = true;
 
@@ -236,12 +218,10 @@ public class GestorUsuarios {
         }
 
         if (encontrado) {
-
             guardarUsuarios(usuarios);
             System.out.println("Usuario eliminado");
 
         } else {
-
             System.out.println("No existe ese usuario");
         }
     }
@@ -252,19 +232,13 @@ public class GestorUsuarios {
 
         ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 
-        FileInputStream fis =
-                new FileInputStream("./ficheros/Usuarios.dat");
-
-        ObjectInputStream ois =
-                new ObjectInputStream(fis);
+        FileInputStream fis = new FileInputStream("./ficheros/Usuarios.dat");
+        ObjectInputStream ois = new ObjectInputStream(fis);
 
         while (true) {
 
             try {
-
-                Usuario usuario =
-                        (Usuario) ois.readObject();
-
+                Usuario usuario = (Usuario) ois.readObject();
                 usuarios.add(usuario);
 
             } catch (EOFException e) {
@@ -273,7 +247,6 @@ public class GestorUsuarios {
                 break;
             }
         }
-
         ois.close();
 
         return usuarios;
@@ -284,14 +257,10 @@ public class GestorUsuarios {
     public static void guardarUsuarios(
             ArrayList<Usuario> usuarios) throws Exception {
 
-        FileOutputStream fos =
-                new FileOutputStream("./ficheros/Usuarios.dat");
-
-        ObjectOutputStream oos =
-                new ObjectOutputStream(fos);
+        FileOutputStream fos = new FileOutputStream("./ficheros/Usuarios.dat");
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
 
         for (int i = 0; i < usuarios.size(); i++) {
-
             oos.writeObject(usuarios.get(i));
         }
 
@@ -299,13 +268,12 @@ public class GestorUsuarios {
     }
 
 
-    // Comprueba si existe un usuario con ese ID.
+    // Comprueba si existe un usuario con ese ID
     public static boolean existeUsuario(int id) throws Exception {
 
         ArrayList<Usuario> usuarios = leerUsuarios();
 
         for (int i = 0; i < usuarios.size(); i++) {
-
             if (usuarios.get(i).getIdUsuario() == id) {
 
                 return true;

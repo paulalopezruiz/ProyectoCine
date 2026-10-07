@@ -216,7 +216,6 @@ public class GestorReservas {
         }
 
         if (encontrada) {
-
             guardarReservas(reservas);
             System.out.println("Reserva eliminada");
 
@@ -235,7 +234,6 @@ public class GestorReservas {
         while (true) {
 
             try {
-
                 Reserva reserva = (Reserva) ois.readObject();
                 reservas.add(reserva);
 
@@ -293,13 +291,9 @@ public class GestorReservas {
 
                 if (asiento <= 0) {
                     System.out.println("Tiene que ser un asiento mayor a 0");
-
                 } else if (repetido) {
-
                     System.out.println("Ya has elegido ese asiento");
-
                 } else if (asientoOcupado(reservas, idSesion, asiento, idReservaIgnorar)) {
-
                     System.out.println("Ese asiento ya está reservado");
                 } else {
 
@@ -336,7 +330,6 @@ public class GestorReservas {
 
         for (int i = 0; i < reservas.size(); i++) {
             if (reservas.get(i).getIdUsuario() == idUsuario) {
-
                 return true;
             }
         }
@@ -344,7 +337,6 @@ public class GestorReservas {
     }
 
     public static boolean sesionTieneReservas(int idSesion) throws Exception {
-
         ArrayList<Reserva> reservas = leerReservas();
 
         for (int i = 0; i < reservas.size(); i++) {

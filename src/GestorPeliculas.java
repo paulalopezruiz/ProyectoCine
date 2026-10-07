@@ -56,7 +56,7 @@ public class GestorPeliculas {
     }
 
 
-    // Crea Peliculas.dat si todavía no existe.
+    // Crea Peliculas.dat si todavía no existe
     public static void crearFicheroPeliculas() throws Exception {
 
         File fichero = new File("./ficheros/Peliculas.dat");
@@ -73,7 +73,7 @@ public class GestorPeliculas {
     }
 
 
-    // Pide los datos de una película y la guarda en el fichero.
+    // Pide los datos de una película y la guarda en el fichero
     public static void altaPelicula() throws Exception {
 
         ArrayList<Pelicula> peliculas = leerPeliculas();
@@ -83,9 +83,8 @@ public class GestorPeliculas {
 
         boolean existe = false;
 
-        // Comprueba que no haya otra película con el mismo ID.
+        // Comprueba que no haya otra película con el mismo ID
         for (int i = 0; i < peliculas.size(); i++) {
-
             if (peliculas.get(i).getIdPelicula() == id) {
                 existe = true;
             }
@@ -99,33 +98,27 @@ public class GestorPeliculas {
 
             System.out.print("Escribe el título: ");
             String titulo = Lectura.leerCadena();
-
             System.out.print("Escribe el género: ");
             String genero = Lectura.leerCadena();
-
             System.out.print("Escribe la duración en minutos: ");
             int duracion = Lectura.leerEntero();
 
             Pelicula pelicula = new Pelicula(id, titulo, genero, duracion);
 
             peliculas.add(pelicula);
-
             guardarPeliculas(peliculas);
-
             System.out.println("Película añadida");
         }
     }
 
 
-    // Lee y muestra todas las películas guardadas.
+    // Lee y muestra todas las películas guardadas
     public static void mostrarPeliculas() throws Exception {
 
         ArrayList<Pelicula> peliculas = leerPeliculas();
 
         if (peliculas.size() == 0) {
-
             System.out.println("No hay películas");
-
         } else {
 
             for (int i = 0; i < peliculas.size(); i++) {
@@ -135,7 +128,7 @@ public class GestorPeliculas {
     }
 
 
-    // Busca una película utilizando su ID.
+    // Busca una película utilizando su ID
     public static void buscarPelicula() throws Exception {
 
         ArrayList<Pelicula> peliculas = leerPeliculas();
@@ -146,21 +139,18 @@ public class GestorPeliculas {
         boolean encontrada = false;
 
         for (int i = 0; i < peliculas.size(); i++) {
-
             if (peliculas.get(i).getIdPelicula() == id) {
-
                 peliculas.get(i).mostrar();
                 encontrada = true;
             }
         }
-
         if (!encontrada) {
             System.out.println("No existe esa película");
         }
     }
 
 
-    // Busca una película y permite cambiar sus datos.
+    // Busca una película y permite cambiar sus datos
     public static void modificarPelicula() throws Exception {
 
         ArrayList<Pelicula> peliculas = leerPeliculas();
@@ -180,10 +170,8 @@ public class GestorPeliculas {
 
                 System.out.print("Nuevo título: ");
                 String titulo = Lectura.leerCadena();
-
                 System.out.print("Nuevo género: ");
                 String genero = Lectura.leerCadena();
-
                 System.out.print("Nueva duración: ");
                 int duracion = Lectura.leerEntero();
 
@@ -194,18 +182,15 @@ public class GestorPeliculas {
         }
 
         if (encontrada) {
-
             guardarPeliculas(peliculas);
             System.out.println("Película modificada");
 
         } else {
-
             System.out.println("No existe esa película");
         }
     }
 
-
-    // Elimina una película por su ID.
+    // Elimina una película por su ID
     public static void eliminarPelicula() throws Exception {
 
         ArrayList<Pelicula> peliculas = leerPeliculas();
@@ -213,7 +198,7 @@ public class GestorPeliculas {
         System.out.print("Introduce el ID de la película que quieres eliminar: ");
         int id = Lectura.leerEntero();
 
-        // No deja eliminarla si tiene sesiones relacionadas.
+        // No deja eliminarla si tiene sesiones relacionadas
         if (GestorSesiones.peliculaTieneSesiones(id)) {
 
             System.out.println("No puedes eliminar la película porque tiene sesiones");
@@ -234,82 +219,60 @@ public class GestorPeliculas {
         }
 
         if (encontrada) {
-
             guardarPeliculas(peliculas);
             System.out.println("Película eliminada");
 
         } else {
-
             System.out.println("No existe esa pelicula");
         }
     }
 
-
-    // Lee las películas del fichero y las guarda en un ArrayList.
+    // Lee las películas del fichero y las guarda en un ArrayList
     public static ArrayList<Pelicula> leerPeliculas() throws Exception {
 
         ArrayList<Pelicula> peliculas = new ArrayList<Pelicula>();
 
-        FileInputStream fis =
-                new FileInputStream("./ficheros/Peliculas.dat");
-
-        ObjectInputStream ois =
-                new ObjectInputStream(fis);
+        FileInputStream fis = new FileInputStream("./ficheros/Peliculas.dat");
+        ObjectInputStream ois = new ObjectInputStream(fis);
 
         while (true) {
-
             try {
 
-                Pelicula pelicula =
-                        (Pelicula) ois.readObject();
-
+                Pelicula pelicula = (Pelicula) ois.readObject();
                 peliculas.add(pelicula);
 
             } catch (EOFException e) {
-
                 // Cuando llega al final del fichero termina la lectura.
                 break;
             }
         }
-
         ois.close();
-
         return peliculas;
     }
 
-
-    // Guarda todas las películas del ArrayList en Peliculas.dat.
+    // Guarda todas las películas del ArrayList en Peliculas.dat
     public static void guardarPeliculas(
             ArrayList<Pelicula> peliculas) throws Exception {
 
-        FileOutputStream fos =
-                new FileOutputStream("./ficheros/Peliculas.dat");
-
-        ObjectOutputStream oos =
-                new ObjectOutputStream(fos);
+        FileOutputStream fos = new FileOutputStream("./ficheros/Peliculas.dat");
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
 
         for (int i = 0; i < peliculas.size(); i++) {
-
             oos.writeObject(peliculas.get(i));
         }
-
         oos.close();
     }
 
 
-    // Comprueba si existe una película con ese ID.
+    // Comprueba si existe una película con ese ID
     public static boolean existePelicula(int id) throws Exception {
 
         ArrayList<Pelicula> peliculas = leerPeliculas();
-
         for (int i = 0; i < peliculas.size(); i++) {
-
             if (peliculas.get(i).getIdPelicula() == id) {
-
                 return true;
             }
         }
-
         return false;
     }
 }

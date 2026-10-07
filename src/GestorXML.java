@@ -17,7 +17,7 @@ import org.w3c.dom.Element;
 
 public class GestorXML {
 
-    // Exporta todos los datos a XML usando XStream.
+    // Exporta todos los datos a XML usando XStream
     public static void exportarXML() throws Exception {
         exportarPeliculasXML();
         exportarUsuariosXML();
@@ -27,7 +27,7 @@ public class GestorXML {
         System.out.println("Datos exportados a XML");
     }
 
-    // Exporta las películas a Peliculas.xml con XStream.
+    // Exporta las películas a Peliculas.xml con XStream
     public static void exportarPeliculasXML() throws Exception {
         ArrayList<Pelicula> peliculas = GestorPeliculas.leerPeliculas();
 
@@ -41,7 +41,7 @@ public class GestorXML {
         fichero.close();
     }
 
-    // Exporta los usuarios a Usuarios.xml con XStream.
+    // Exporta los usuarios a Usuarios.xml con XStream
     public static void exportarUsuariosXML() throws Exception {
         ArrayList<Usuario> usuarios = GestorUsuarios.leerUsuarios();
 
@@ -55,7 +55,7 @@ public class GestorXML {
         fichero.close();
     }
 
-    // Exporta las sesiones a Sesiones.xml con XStream.
+    // Exporta las sesiones a Sesiones.xml con XStream
     public static void exportarSesionesXML() throws Exception {
         ArrayList<Sesion> sesiones = GestorSesiones.leerSesiones();
 
@@ -69,7 +69,7 @@ public class GestorXML {
         fichero.close();
     }
 
-    // Exporta las reservas a Reservas.xml con XStream.
+    // Exporta las reservas a Reservas.xml con XStream
     public static void exportarReservasXML() throws Exception {
         ArrayList<Reserva> reservas = GestorReservas.leerReservas();
 
@@ -83,7 +83,7 @@ public class GestorXML {
         fichero.close();
     }
 
-    // Exporta todos los datos a XML usando DOM.
+    // Exporta todos los datos a XML usando DOM
     public static void exportarDOM() throws Exception {
         exportarPeliculasDOM();
         exportarUsuariosDOM();
@@ -93,7 +93,7 @@ public class GestorXML {
         System.out.println("Datos exportados a XML con DOM");
     }
 
-    // Crea PeliculasDOM.xml usando DOM.
+    // Crea PeliculasDOM.xml usando DOM
     private static void exportarPeliculasDOM() throws Exception {
         ArrayList<Pelicula> peliculas = GestorPeliculas.leerPeliculas();
 
@@ -130,7 +130,7 @@ public class GestorXML {
         guardarDocumentoDOM(documento, "./ficheros/PeliculasDOM.xml");
     }
 
-    // Crea UsuariosDOM.xml usando DOM.
+    // Crea UsuariosDOM.xml usando DOM
     private static void exportarUsuariosDOM() throws Exception {
         ArrayList<Usuario> usuarios = GestorUsuarios.leerUsuarios();
 
@@ -208,12 +208,14 @@ public class GestorXML {
         guardarDocumentoDOM(documento, "./ficheros/SesionesDOM.xml");
     }
 
-    // Crea ReservasDOM.xml usando DOM.
+    // Crea ReservasDOM.xml usando DOM
     private static void exportarReservasDOM() throws Exception {
         ArrayList<Reserva> reservas = GestorReservas.leerReservas();
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
         DocumentBuilder builder = factory.newDocumentBuilder();
+
         Document documento = builder.newDocument();
 
         Element raiz = documento.createElement("reservas");
@@ -252,16 +254,14 @@ public class GestorXML {
         guardarDocumentoDOM(documento, "./ficheros/ReservasDOM.xml");
     }
 
-    // Guarda el documento DOM en un fichero XML.
+    // Guarda el documento DOM en un fichero XML
     private static void guardarDocumentoDOM(
             Document documento,
             String ruta) throws Exception {
 
-        TransformerFactory transformerFactory =
-                TransformerFactory.newInstance();
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
 
-        Transformer transformer =
-                transformerFactory.newTransformer();
+        Transformer transformer = transformerFactory.newTransformer();
 
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 

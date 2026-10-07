@@ -55,7 +55,7 @@ public class GestorSesiones {
     }
 
 
-    // Crea Sesiones.dat si todavía no existe.
+    // Crea Sesiones.dat si todavía no existe
     public static void crearFicheroSesiones() throws Exception {
 
         File fichero = new File("./ficheros/Sesiones.dat");
@@ -72,7 +72,7 @@ public class GestorSesiones {
     }
 
 
-    // Pide los datos de una sesión y la guarda.
+    // Pide los datos de una sesión y la guarda
     public static void altaSesion() throws Exception {
 
         ArrayList<Sesion> sesiones = leerSesiones();
@@ -82,7 +82,7 @@ public class GestorSesiones {
 
         boolean existe = false;
 
-        // Comprueba que el ID de la sesión no esté repetido.
+        // Comprueba que el ID de la sesión no esté repetido
         for (int i = 0; i < sesiones.size(); i++) {
 
             if (sesiones.get(i).getIdSesion() == id) {
@@ -91,7 +91,6 @@ public class GestorSesiones {
         }
 
         if (existe) {
-
             System.out.println("Ya existe una sesión con ese ID");
 
         } else {
@@ -99,7 +98,7 @@ public class GestorSesiones {
             System.out.print("Escribe el ID de la película: ");
             int idPelicula = Lectura.leerEntero();
 
-            // Comprueba que la película exista.
+            // Comprueba que la película exista
             if (!GestorPeliculas.existePelicula(idPelicula)) {
 
                 System.out.println("No existe una película con ese ID");
@@ -108,13 +107,10 @@ public class GestorSesiones {
 
             System.out.print("Escribe la fecha: ");
             String fecha = Lectura.leerCadena();
-
             System.out.print("Escribe la hora: ");
             String hora = Lectura.leerCadena();
-
             System.out.print("Escribe la sala: ");
             int sala = Lectura.leerEntero();
-
             System.out.print("Escribe el precio: ");
             double precio = Lectura.leerEntero();
 
@@ -122,7 +118,6 @@ public class GestorSesiones {
                     new Sesion(id, idPelicula, fecha, hora, sala, precio);
 
             sesiones.add(sesion);
-
             guardarSesiones(sesiones);
 
             System.out.println("Sesión añadida");
@@ -130,13 +125,12 @@ public class GestorSesiones {
     }
 
 
-    // Lee y muestra todas las sesiones guardadas.
+    // Lee y muestra todas las sesiones guardadas
     public static void mostrarSesiones() throws Exception {
 
         ArrayList<Sesion> sesiones = leerSesiones();
 
         if (sesiones.size() == 0) {
-
             System.out.println("No hay sesiones");
 
         } else {
@@ -148,7 +142,7 @@ public class GestorSesiones {
     }
 
 
-    // Busca una sesión utilizando su ID.
+    // Busca una sesión utilizando su ID
     public static void buscarSesion() throws Exception {
 
         ArrayList<Sesion> sesiones = leerSesiones();
@@ -173,7 +167,7 @@ public class GestorSesiones {
     }
 
 
-    // Busca una sesión y permite cambiar sus datos.
+    // Busca una sesión y permite cambiar sus datos
     public static void modificarSesion() throws Exception {
 
         ArrayList<Sesion> sesiones = leerSesiones();
@@ -186,7 +180,6 @@ public class GestorSesiones {
         for (int i = 0; i < sesiones.size(); i++) {
 
             Sesion sesion = sesiones.get(i);
-
             if (sesion.getIdSesion() == id) {
 
                 encontrada = true;
@@ -194,7 +187,7 @@ public class GestorSesiones {
                 System.out.print("Nuevo ID de película: ");
                 int idPelicula = Lectura.leerEntero();
 
-                // Comprueba que la nueva película exista.
+                // Comprueba que la nueva película exista
                 if (!GestorPeliculas.existePelicula(idPelicula)) {
 
                     System.out.println("No existe una película con ese ID");
@@ -203,13 +196,10 @@ public class GestorSesiones {
 
                 System.out.print("Nueva fecha: ");
                 String fecha = Lectura.leerCadena();
-
                 System.out.print("Nueva hora: ");
                 String hora = Lectura.leerCadena();
-
                 System.out.print("Nueva sala: ");
                 int sala = Lectura.leerEntero();
-
                 System.out.print("Nuevo precio: ");
                 double precio = Lectura.leerEntero();
 
@@ -222,7 +212,6 @@ public class GestorSesiones {
         }
 
         if (encontrada) {
-
             guardarSesiones(sesiones);
             System.out.println("Sesión modificada");
 
@@ -233,7 +222,7 @@ public class GestorSesiones {
     }
 
 
-    // Elimina una sesión utilizando su ID.
+    // Elimina una sesión utilizando su ID
     public static void eliminarSesion() throws Exception {
 
         ArrayList<Sesion> sesiones = leerSesiones();
@@ -241,22 +230,17 @@ public class GestorSesiones {
         System.out.print("Escribe el ID de la sesión que quieres eliminar: ");
         int id = Lectura.leerEntero();
 
-        // No permite eliminar una sesión que tenga reservas.
+        // No permite eliminar una sesión que tenga reservas
         if (GestorReservas.sesionTieneReservas(id)) {
-
-            System.out.println(
-                    "No puedes eliminar la sesión porque tiene reservas"
-            );
+            System.out.println("No puedes eliminar la sesión porque tiene reservas");
 
             return;
         }
-
         boolean encontrada = false;
 
         for (int i = 0; i < sesiones.size(); i++) {
 
             if (sesiones.get(i).getIdSesion() == id) {
-
                 sesiones.remove(i);
                 encontrada = true;
 
@@ -265,62 +249,47 @@ public class GestorSesiones {
         }
 
         if (encontrada) {
-
             guardarSesiones(sesiones);
             System.out.println("Sesión eliminada");
 
         } else {
-
             System.out.println("No existe esa sesión");
         }
     }
 
 
-    // Lee las sesiones del fichero y las guarda en un ArrayList.
+    // Lee las sesiones del fichero y las guarda en un ArrayList
     public static ArrayList<Sesion> leerSesiones() throws Exception {
-
         ArrayList<Sesion> sesiones = new ArrayList<Sesion>();
 
-        FileInputStream fis =
-                new FileInputStream("./ficheros/Sesiones.dat");
-
-        ObjectInputStream ois =
-                new ObjectInputStream(fis);
+        FileInputStream fis = new FileInputStream("./ficheros/Sesiones.dat");
+        ObjectInputStream ois = new ObjectInputStream(fis);
 
         while (true) {
-
             try {
-
-                Sesion sesion =
-                        (Sesion) ois.readObject();
-
+                Sesion sesion = (Sesion) ois.readObject();
                 sesiones.add(sesion);
 
             } catch (EOFException e) {
 
-                // Al llegar al final del fichero termina la lectura.
+                // Al llegar al final del fichero termina la lectura
                 break;
             }
         }
 
         ois.close();
-
         return sesiones;
     }
 
 
-    // Guarda todas las sesiones del ArrayList en Sesiones.dat.
+    // Guarda todas las sesiones del ArrayList en Sesiones.dat
     public static void guardarSesiones(
             ArrayList<Sesion> sesiones) throws Exception {
 
-        FileOutputStream fos =
-                new FileOutputStream("./ficheros/Sesiones.dat");
-
-        ObjectOutputStream oos =
-                new ObjectOutputStream(fos);
+        FileOutputStream fos = new FileOutputStream("./ficheros/Sesiones.dat");
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
 
         for (int i = 0; i < sesiones.size(); i++) {
-
             oos.writeObject(sesiones.get(i));
         }
 
@@ -328,31 +297,27 @@ public class GestorSesiones {
     }
 
 
-    // Comprueba si existe una sesión con ese ID.
+    // Comprueba si existe una sesión con ese ID
     public static boolean existeSesion(int id) throws Exception {
 
         ArrayList<Sesion> sesiones = leerSesiones();
 
         for (int i = 0; i < sesiones.size(); i++) {
-
             if (sesiones.get(i).getIdSesion() == id) {
 
                 return true;
             }
         }
-
         return false;
     }
 
 
-    // Comprueba si una película tiene sesiones relacionadas.
+    // Comprueba si una película tiene sesiones relacionadas
     public static boolean peliculaTieneSesiones(
             int idPelicula) throws Exception {
 
         ArrayList<Sesion> sesiones = leerSesiones();
-
         for (int i = 0; i < sesiones.size(); i++) {
-
             if (sesiones.get(i).getIdPelicula() == idPelicula) {
 
                 return true;
